@@ -60,6 +60,7 @@ class Flow:
         self.backward_bulk_packet_count = 0
         self.backward_bulk_size = 0
         self.backward_bulk_size_tmp = 0
+        self.upload_num = 0
 
     def get_data(self) -> dict:
         """This method obtains the values of the features extracted from each flow.
@@ -217,6 +218,9 @@ class Flow:
 
         self.latest_timestamp = max([packet.time, self.latest_timestamp])
 
+        if direction ==  PacketDirection.FORWARD:
+            self.upload_num += 1
+            # print(packet.time, len(PacketCount.get_payload(packet)))
         if "TCP" in packet:
             if (
                 direction == PacketDirection.FORWARD

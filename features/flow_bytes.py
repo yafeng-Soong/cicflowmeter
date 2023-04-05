@@ -1,3 +1,4 @@
+from decimal import Decimal
 from scapy.layers.inet import IP, TCP
 
 from .context.packet_direction import PacketDirection
@@ -265,12 +266,12 @@ class FlowBytes:
 
     def get_bulk_rate(self, packet_direction):
         if packet_direction == PacketDirection.FORWARD:
-            if self.feature.forward_bulk_count != 0:
+            if self.feature.forward_bulk_count != 0 and self.feature.forward_bulk_duration.compare(Decimal('0.0')) != 0:
                 return (
                     self.feature.forward_bulk_size / self.feature.forward_bulk_duration
                 )
         else:
-            if self.feature.backward_bulk_count != 0:
+            if self.feature.backward_bulk_count != 0 and self.feature.backward_bulk_duration.compare(Decimal('0.0')) != 0:
                 return (
                     self.feature.backward_bulk_size
                     / self.feature.backward_bulk_duration
