@@ -55,8 +55,8 @@ class FlowSession(DefaultSession):
         except Exception:
             return
         
-        if self.protocol not in packet:
-            return
+        # if self.protocol not in packet:
+        #     return
         # 只记录向前的包
         if not is_fwd(packet["IP"].src):
             return
