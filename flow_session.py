@@ -20,7 +20,7 @@ class FlowSession(DefaultSession):
         self.csv_line = 0
 
         if self.output_mode == "flow":
-            output = open(self.output_file, "w")
+            output = open(self.output_file, "a+")
             self.csv_writer = csv.writer(output)
 
         self.packets_count = 0
@@ -115,8 +115,8 @@ class FlowSession(DefaultSession):
             ):
                 data = flow.get_data()
 
-                if self.csv_line == 0:
-                    self.csv_writer.writerow(data.keys())
+                # if self.csv_line == 0:
+                #     self.csv_writer.writerow(data.keys())
 
                 self.csv_writer.writerow(data.values())
                 self.csv_line += 1

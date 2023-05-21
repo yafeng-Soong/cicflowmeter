@@ -1,6 +1,6 @@
 import numpy
 from scipy import stats as stat
-
+from scapy.layers.inet import TCP, UDP
 
 class PacketLength:
     """This class extracts features related to the Packet Lengths.
@@ -24,13 +24,21 @@ class PacketLength:
             packet_lengths (List[int]):
 
         """
+        # if packet_direction is not None:
+        #     return [
+        #         len(packet)
+        #         for packet, direction in self.feature.packets
+        #         if direction == packet_direction
+        #     ]
+        # return [len(packet) for packet, _ in self.feature.packets]
         if packet_direction is not None:
             return [
-                len(packet)
+                len(packet[TCP].payload) if TCP in packet
+                else len(packet[TCP].payload)
                 for packet, direction in self.feature.packets
                 if direction == packet_direction
             ]
-        return [len(packet) for packet, _ in self.feature.packets]
+        return [len(packet[TCP].payload) if TCP in packet else len(packet[TCP].payload) for packet, _ in self.feature.packets]
 
     def get_header_length(self, packet_direction=None) -> list:
         """Creates a list of packet lengths.
